@@ -1,11 +1,18 @@
 package com.example.garuda20app;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 
-public class DatabaseHelpder extends SQLLiteOpenHelper {
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
+public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DatabaseHelper";
-
     private static final String TABLE_NAME = "yes";
     private static final String TITLE_COL = "Title";
     private static final String PAY_COL = "Pay";
@@ -13,19 +20,32 @@ public class DatabaseHelpder extends SQLLiteOpenHelper {
     private static final String TIME_COL = "Time";
     private static final String DESCRIPTION_COL = "Description";
 
+    /**
+     * Create a helper object to create, open, and/or manage a database.
+     * This method always returns very quickly.  The database is not actually
+     * created or opened until one of {@link #getWritableDatabase} or
+     * {@link #getReadableDatabase} is called.
+     *
+     * @param context to use for locating paths to the the database
+     * @param name    of the database file, or null for an in-memory database
+     * @param factory to use for creating cursor objects, or null for the default
+     * @param version number of the database (starting at 1); if the database is older,
+     *                {@link #onUpgrade} will be used to upgrade the database; if the database is
+     *                newer, {@link #onDowngrade} will be used to downgrade the database
+     */
+    public DatabaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, name, factory, version);
+    }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
-    public DatabaseHelper(@Nullable Context context) {
-        super(context, "Entries.db", null, 1);
-    }
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTableStatement = "CREATE TABLE " + TABLE_NAME
-                + ID_COL + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, "
+                +  " (ID INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + TITLE_COL + " TITLE, "
                 + PAY_COL + " PAY, "
                 + LOCATION_COL + " LOCATION, "
@@ -34,15 +54,16 @@ public class DatabaseHelpder extends SQLLiteOpenHelper {
         db.execSQL(createTableStatement);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public boolean addDatabaseEntry(Entry Entry) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(COLUMN_DATE_CREATED, Entry.getDate());
+        cv.put(TITLE_COL, Entry.getTitle());
 
-        cv.put(COLUMN_IMPROVEMENT, Entry.getImproveText());
-        cv.put(COLUMN_GRATITUDE, Entry.getGratitudeText());
+        cv.put(PAY_COL, Entry.getpay());
+        cv.put(LOCATION_COL, Entry.getLocation());
+        cv.put(TIME_COL, Entry.getTime());
+        cv.put(DESCRIPTION_COL, Entry.getDescription());
 
         long insert = db.insert(TITLE_COL, null, cv);
         if (insert == -1) {
@@ -54,8 +75,8 @@ public class DatabaseHelpder extends SQLLiteOpenHelper {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Entry getEntry(String queryDate) throws Exception {
-        String queryString = "SELECT " + TITLE_COL + ", " + PAY_COL + ", " + LOCATION_COL + ", " DESCRIPTION_COL + ", " + TIME_COL + " FROM " + TABLE_NAME + " WHERE "
-                + COLUMN_DATE_CREATED + "='" + queryDate + "'";
+        String queryString = "SELECT " + TITLE_COL + ", " + PAY_COL + ", " + LOCATION_COL + ", " + DESCRIPTION_COL + ", " + TIME_COL + " FROM " + TABLE_NAME + " WHERE "
+                + "='" + queryDate + "'";
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -66,9 +87,12 @@ public class DatabaseHelpder extends SQLLiteOpenHelper {
             throw new Exception();
         }
 
-        String improveText = cursor.getString(1);
-        String gratitudeText = cursor.getString(2);
-        Entry entry = new Entry(queryDate, improveText, gratitudeText);
+        String title = cursor.getString(1);
+        String pay = cursor.getString(2);
+        String location = cursor.getString(1);
+        String description = cursor.getString(2);
+        String time = cursor.getString(1);
+        Entry entry = new Entry(title, pay, location, time, description);
         cursor.close();
         db.close();
         return entry;

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class Entry {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Entry(String TABLE_NAME, String TITLE_COL, String PAY_COL, String LOCATION_COL, String TIME_COL, String DESCRIPTION_COL) {
+    public Entry(String TITLE_COL, String PAY_COL, String LOCATION_COL, String TIME_COL, String DESCRIPTION_COL) {
         this.title = TITLE_COL;
         this.pay = PAY_COL;
         this.location = LOCATION_COL;
@@ -29,7 +29,7 @@ public class Entry {
                 '}';
     }
 
-    public static String getTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -38,12 +38,12 @@ public class Entry {
     }
 
     public String getpay() {
-        return improveText;
+        return pay;
     }
 
-    public void setPay(String pay) {
-        this.pay = pay;
-    }
+//    public void setPay(String pay) {
+//        this.pay = pay;
+//    }
 
     public String getLocation() {
         return location;
