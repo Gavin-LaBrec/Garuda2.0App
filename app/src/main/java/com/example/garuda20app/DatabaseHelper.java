@@ -89,9 +89,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String title = cursor.getString(1);
         String pay = cursor.getString(2);
-        String location = cursor.getString(1);
-        String description = cursor.getString(2);
-        String time = cursor.getString(1);
+        String location = cursor.getString(3);
+        String description = cursor.getString(4);
+        String time = cursor.getString(5);
         Entry entry = new Entry(title, pay, location, time, description);
         cursor.close();
         db.close();
