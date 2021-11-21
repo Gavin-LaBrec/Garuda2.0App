@@ -6,8 +6,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.database.sqlite.SQLiteOpenHelper;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "Main Activity";
+
+    DatabaseHelper mDatabaseHelper;
+    private Button viewJobsButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
