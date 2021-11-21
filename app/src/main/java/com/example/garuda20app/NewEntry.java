@@ -1,4 +1,4 @@
-package com.example.dailyjournal;
+package com.example.garuda20app;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -53,13 +53,19 @@ public class NewEntry extends AppCompatActivity {
             public void onClick(View v) {
                 // Collect data for entry
 
-                TextView improveTextView = (TextView) findViewById(R.id.improveTextMultiLine);
-                String improveText = improveTextView.getText().toString();
-                TextView gratitudeTextView = (TextView) findViewById(R.id.gratitudeTextMultiLine);
-                String gratitudeText = gratitudeTextView.getText().toString();
+                TextView titleTextView = (TextView) findViewById(R.id.titleTextMultiLine);
+                String titleText = titleTextView.getText().toString();
+                TextView payTextView = (TextView) findViewById(R.id.payTextMultiLine);
+                String payText = payTextView.getText().toString();
+                TextView locationTextView = (TextView) findViewById(R.id.locationTextMultiLine);
+                String locationText = locationTextView.getText().toString();
+                TextView timeTextView = (TextView) findViewById(R.id.timeTextMultiLine);
+                String timeText = timeTextView.getText().toString();
+                TextView descriptionTextView = (TextView) findViewById(R.id.descriptionTextMultiLine);
+                String descriptionText = descriptionTextView.getText().toString();
 
                 // Create and add entry to database
-                Entry newEntry = new Entry(date, improveText, gratitudeText);
+                Entry newEntry = new Entry(title, pay, location, time, description);
                 DatabaseHelper databaseHelper = new DatabaseHelper(NewEntry.this);
                 databaseHelper.addDatabaseEntry(newEntry);
                 finish();
@@ -67,16 +73,6 @@ public class NewEntry extends AppCompatActivity {
         });
     }
 
-    /**
-     * Initializes text on starting activity
-     */
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void configureText() {
-        // Display current date
-        String currentDate = DatabaseHelper.formatDate(LocalDateTime.now());
-        TextView dateView = (TextView) findViewById(R.id.dateTextView);
-        dateView.setText(currentDate);
-    }
 
 
 }
