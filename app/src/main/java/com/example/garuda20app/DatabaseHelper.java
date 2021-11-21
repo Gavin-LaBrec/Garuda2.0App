@@ -25,7 +25,7 @@ public class DatabaseHelpder extends SQLLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTableStatement = "CREATE TABLE " + TABLE_NAME
-                + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + ID_COL + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + TITLE_COL + " TITLE, "
                 + PAY_COL + " PAY, "
                 + LOCATION_COL + " LOCATION, "
@@ -44,7 +44,7 @@ public class DatabaseHelpder extends SQLLiteOpenHelper {
         cv.put(COLUMN_IMPROVEMENT, Entry.getImproveText());
         cv.put(COLUMN_GRATITUDE, Entry.getGratitudeText());
 
-        long insert = db.insert(ENTRIES_TABLE, null, cv);
+        long insert = db.insert(TITLE_COL, null, cv);
         if (insert == -1) {
             return false;
         } else {
@@ -54,7 +54,7 @@ public class DatabaseHelpder extends SQLLiteOpenHelper {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Entry getEntry(String queryDate) throws Exception {
-        String queryString = "SELECT " + COLUMN_DATE_CREATED + ", " + COLUMN_IMPROVEMENT + ", " + COLUMN_GRATITUDE + " FROM " + ENTRIES_TABLE + " WHERE "
+        String queryString = "SELECT " + TITLE_COL + ", " + PAY_COL + ", " + LOCATION_COL + ", " DESCRIPTION_COL + ", " + TIME_COL + " FROM " + TABLE_NAME + " WHERE "
                 + COLUMN_DATE_CREATED + "='" + queryDate + "'";
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -77,4 +77,5 @@ public class DatabaseHelpder extends SQLLiteOpenHelper {
     public SQLiteDatabase getDatabase() {
         return (this.getReadableDatabase());
     }
+
 }
